@@ -1,4 +1,5 @@
-﻿using Capstone.Models;
+﻿using System.Collections.Generic; // Add this using directive
+using Capstone.Models;
 
 namespace Capstone.DAO.Interfaces
 {
