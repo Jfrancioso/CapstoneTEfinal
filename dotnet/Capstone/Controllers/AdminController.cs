@@ -13,11 +13,13 @@ namespace Capstone.Controllers
     {
         private readonly IUserDao userDao;
         private readonly IReviewDao reviewDao;
+        private readonly IDrinkDao drinkDao;
 
-        public AdminController(IUserDao userDao, IReviewDao reviewDao)
+        public AdminController(IUserDao userDao, IReviewDao reviewDao, IDrinkDao drinkDao)
         {
             this.userDao = userDao;
             this.reviewDao = reviewDao;
+            this.drinkDao = drinkDao;
         }
 
         [HttpGet("users")]
@@ -56,6 +58,22 @@ namespace Capstone.Controllers
                 return NotFound();
             }
             return NoContent();
+        }
+
+        [HttpGet("drinks")]
+        public ActionResult<IList<Drink>> GetAllDrinks()
+        {
+            return Ok(drinkDao.GetAllDrinks());
+        }
+
+        [HttpPut("drinks/{id}")]
+        public ActionResult<Drink> UpdateDrink(int id, Drink drink)
+        {
+            if (drinkDao.GetDrinkById(id) == null)
+            {
+                return NotFound();
+            }
+            return Ok(drinkDao.UpdateDrink(id, drink));
         }
     }
 }

@@ -56,7 +56,10 @@ drink_id int IDENTITY (1,1) NOT NULL,
 drink_name VARCHAR (50) NOT NULL,
 description TEXT,
 isFrozen TINYINT NOT NULL,
-PRIMARY KEY (drink_id)
+is_approved bit NOT NULL DEFAULT 0,
+created_by int NULL,
+PRIMARY KEY (drink_id),
+FOREIGN KEY (created_by) REFERENCES users(user_id)
 );
 
 CREATE TABLE restaurants (
@@ -86,6 +89,7 @@ review_id int IDENTITY (1,1) NOT NULL,
 user_id int NOT NULL,
 rating int,
 review_text TEXT,
+is_approved bit NOT NULL DEFAULT 0,
 PRIMARY KEY (review_id),
 FOREIGN KEY (user_id) REFERENCES users(user_id),
 CONSTRAINT Rating_Ck CHECK (rating IN (1,2,3,4,5))
@@ -149,6 +153,9 @@ FIRSTROW = 2,
 FIELDTERMINATOR = ',',
 ROWTERMINATOR = ';'
 );
+
+UPDATE drinks SET is_approved = 1 WHERE is_approved = 0;
+UPDATE reviews SET is_approved = 1 WHERE is_approved = 0;
 
 COMMIT;
 

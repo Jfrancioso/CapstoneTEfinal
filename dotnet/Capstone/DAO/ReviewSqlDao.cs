@@ -46,7 +46,7 @@ namespace Capstone.DAO
             }
             return rev;
         }
-        public IList<Review> GetRestaurantReviews(int restID)
+        public IList<Review> GetRestaurantReviews(int restID, int userID = 0)
         {
             List<Review> reviews = new List<Review>();
             try
@@ -54,12 +54,14 @@ namespace Capstone.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(@"SELECT * FROM reviews 
+                    SqlCommand cmd = new SqlCommand(@"SELECT * FROM reviews
                                                      JOIN restaurant_review ON reviews.review_id = restaurant_review.review_id
                                                      JOIN restaurants ON restaurants.restaurant_id = restaurant_review.restaurant_id
-                                                     WHERE restaurants.restaurant_id = @id", conn);
+                                                     WHERE restaurants.restaurant_id = @id
+                                                     AND (is_approved = 1 OR user_id = @user)", conn);
 
                     cmd.Parameters.AddWithValue("@id", restID);
+                    cmd.Parameters.AddWithValue("@user", userID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -137,9 +139,9 @@ namespace Capstone.DAO
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(@" BEGIN TRANSACTION
                     DECLARE @inserted TABLE ([ID] int);
-                    INSERT INTO reviews (user_id, rating, review_text)
+                    INSERT INTO reviews (user_id, rating, review_text, is_approved)
                     OUTPUT INSERTED.review_id INTO @inserted
-                    VALUES (@user_id, @rating, @review_text);
+                    VALUES (@user_id, @rating, @review_text, @isApproved);
                     INSERT INTO restaurant_review (review_id, restaurant_id) 
                     VALUES ((SELECT TOP 1 ID FROM @inserted ORDER BY ID DESC), @restaurant_id);
                     SELECT TOP 1 ID FROM @inserted ORDER BY ID DESC;
@@ -148,6 +150,7 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@user_id", Convert.ToInt32(review.Reviewer_ID));
                     cmd.Parameters.AddWithValue("@rating", Convert.ToInt32(review.Rating));
                     cmd.Parameters.AddWithValue("@review_text", review.ReviewText);
+                    cmd.Parameters.AddWithValue("@isApproved", rev.IsApproved);
                     cmd.Parameters.AddWithValue("@restaurant_id", Convert.ToInt32(review.Reviewable_ID));
 
                     int reviewID = Convert.ToInt32(cmd.ExecuteScalar());
@@ -195,7 +198,8 @@ namespace Capstone.DAO
                 Rating = Convert.ToString(read["rating"]),
                 ReviewerUsername = userDao.GetUserByID(Convert.ToInt32(read["user_id"])).Username,
                 Reviewer_ID = Convert.ToInt32(read["user_id"]),
-                ReviewText = Convert.ToString(read["review_text"])
+                ReviewText = Convert.ToString(read["review_text"]),
+                IsApproved = Convert.ToBoolean(read["is_approved"])
             };
             return rev;
         }
@@ -208,7 +212,8 @@ namespace Capstone.DAO
                 Rating = Convert.ToString(read["rating"]),
                 ReviewerUsername = userDao.GetUserByID(Convert.ToInt32(read["user_id"])).Username,
                 Reviewer_ID = Convert.ToInt32(read["user_id"]),
-                ReviewText = Convert.ToString(read["review_text"])
+                ReviewText = Convert.ToString(read["review_text"]),
+                IsApproved = Convert.ToBoolean(read["is_approved"])
             };
             return rev;
         }
@@ -243,9 +248,10 @@ namespace Capstone.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(@"UPDATE reviews SET rating = @rating, review_text = @text WHERE review_id = @id", conn);
+                    SqlCommand cmd = new SqlCommand(@"UPDATE reviews SET rating = @rating, review_text = @text, is_approved = @approved WHERE review_id = @id", conn);
                     cmd.Parameters.AddWithValue("@rating", Convert.ToInt32(review.Rating));
                     cmd.Parameters.AddWithValue("@text", review.ReviewText);
+                    cmd.Parameters.AddWithValue("@approved", review.IsApproved);
                     cmd.Parameters.AddWithValue("@id", reviewID);
                     cmd.ExecuteNonQuery();
                 }

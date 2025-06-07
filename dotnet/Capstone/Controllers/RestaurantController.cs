@@ -114,12 +114,26 @@ namespace Capstone.Controllers
         public ActionResult<IList<Drink>> GetDrinksForRestaurant(int id)
         {
             IList<Drink> drinks = drinkDao.GetRestaurantDrinks(id);
+            int userId = 0;
+            bool isAdmin = User.IsInRole("admin");
+            if (User.Identity.IsAuthenticated)
+            {
+                int.TryParse(User.FindFirst("sub")?.Value, out userId);
+            }
+            IList<Drink> filtered = new List<Drink>();
+            foreach (Drink d in drinks)
+            {
+                if (d.IsApproved || isAdmin || d.CreatedBy == userId)
+                {
+                    filtered.Add(d);
+                }
+            }
 
-            if (drinks.Count == 0)
+            if (filtered.Count == 0)
             {
                 return NoContent();
             }
-            return Ok(drinks);
+            return Ok(filtered);
         }
 
         [HttpPost("new")]

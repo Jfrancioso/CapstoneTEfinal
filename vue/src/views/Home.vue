@@ -84,7 +84,7 @@ export default {
   ". rest rest rest ."
   "footer footer footer footer footer"; /* Add footer to grid */
   grid-template-columns: .5fr 1fr 4fr 1fr .5fr;
-  background-color: #def7d0;
+  background-color: #f5f5f5;
   
   background-size: cover;
   background-position:center;
@@ -95,7 +95,7 @@ export default {
 
 }
 footer {
-  background-color: #F3FAEF;
+  background-color: #ffffff;
   color: rgb(24, 23, 23);
   padding: 1em;
   margin: 50px 0 0 0;

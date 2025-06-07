@@ -8,5 +8,7 @@
         public string Name { get; set; }
         public string Description { get; set;}
         public bool IsFrozen { get; set; }
+        public bool IsApproved { get; set; }
+        public int CreatedBy { get; set; }
     }
 }
