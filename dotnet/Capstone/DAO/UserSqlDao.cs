@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using Capstone.DAO.Interfaces;
 using Capstone.Models;
@@ -96,6 +97,29 @@ namespace Capstone.DAO
             }
 
             return GetUser(username);
+        }
+
+        public IList<User> GetUsers()
+        {
+            List<User> users = new List<User>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT user_id, username, user_role FROM users", conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        users.Add(GetUserFromReader(reader, true));
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return users;
         }
 
         private User GetUserFromReader(SqlDataReader reader)

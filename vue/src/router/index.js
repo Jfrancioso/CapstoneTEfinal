@@ -105,6 +105,11 @@ const router = new Router({
             component: AdminDashboard
         },
         {
+            path: "/admin/users",
+            name: "manage-users",
+            component: () => import('../views/ManageUsers.vue')
+        },
+        {
             path: "/admin/rules/new",
             name: "add-rule",
             component: AddRule

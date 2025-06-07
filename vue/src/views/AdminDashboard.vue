@@ -10,6 +10,7 @@
         </li>
       </ul>
       <button @click="createNew" class="btn btn-primary">Add Rule</button>
+      <router-link :to="{ name: 'manage-users' }" class="btn btn-secondary ml-2">Manage Posts</router-link>
     </div>
   </div>
 </template>
