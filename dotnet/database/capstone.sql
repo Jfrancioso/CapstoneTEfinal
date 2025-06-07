@@ -48,6 +48,7 @@ DROP TABLE IF EXISTS restaurant_review;
 DROP TABLE IF EXISTS drinks;
 DROP TABLE IF EXISTS restaurants;
 DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS business_rules;
 
 
 CREATE TABLE drinks (
@@ -110,6 +111,14 @@ restaurant_id INT NOT NULL,
 PRIMARY KEY (drink_id, restaurant_id),
 FOREIGN KEY (drink_id) REFERENCES drinks(drink_id),
 FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
+);
+
+CREATE TABLE business_rules (
+    rule_id int IDENTITY(1,1) NOT NULL,
+    rule_name varchar(100) NOT NULL,
+    description text,
+    is_active bit NOT NULL DEFAULT 1,
+    PRIMARY KEY (rule_id)
 );
 COMMIT;
 GO
