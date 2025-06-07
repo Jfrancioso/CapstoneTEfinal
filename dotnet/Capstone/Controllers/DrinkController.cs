@@ -28,13 +28,27 @@ namespace Capstone.Controllers
         public ActionResult<IList<Drink>> GetAllDrinks()
         {
             IList<Drink> drinks = drinkDao.GetAllDrinks();
+            int userId = 0;
+            bool isAdmin = User.IsInRole("admin");
+            if (User.Identity.IsAuthenticated)
+            {
+                int.TryParse(User.FindFirst("sub")?.Value, out userId);
+            }
+            IList<Drink> filtered = new List<Drink>();
+            foreach (Drink d in drinks)
+            {
+                if (d.IsApproved || isAdmin || d.CreatedBy == userId)
+                {
+                    filtered.Add(d);
+                }
+            }
 
-            if (drinks.Count == 0)
+            if (filtered.Count == 0)
             {
                 return NoContent();
             }
 
-            return Ok(drinks);
+            return Ok(filtered);
         }
         [HttpGet("{id}")]
         public ActionResult<Drink> GetDrinkByDrinkId(int id)
@@ -51,6 +65,13 @@ namespace Capstone.Controllers
         [HttpPost]
          public ActionResult<Drink> AddNewDrink(Drink newDrink)
         {
+            int userId = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+                int.TryParse(User.FindFirst("sub")?.Value, out userId);
+            }
+            newDrink.CreatedBy = userId;
+            newDrink.IsApproved = false;
             Drink drink = drinkDao.AddDrink(newDrink);
             if(drink == null)
             {

@@ -5,9 +5,10 @@
       <div id="lime-stars" >
       <img id="lime" src="../assets/lime-slice2.png" v-for="num in revNumber" v-bind:key="num.key"/>
       </div>
-      
+
     </div>
       <p id="review-text">{{review.reviewText}}</p>
+      <span class="pending" v-if="!review.isApproved">Pending Approval</span>
       
       <button v-on:click="deleteReview" v-if='this.$store.state.token !== "" && UserRole === "admin"' >
         <font-awesome-icon :icon="['fas', 'fa-trash']" />
@@ -119,5 +120,11 @@ button{
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
+}
+.pending{
+  font-size: 0.8rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 5px;
 }
 </style>

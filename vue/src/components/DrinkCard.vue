@@ -12,6 +12,7 @@
     <div class = "card-body">
       <p>{{decodeHtml(drink.description)}}</p>
       <p class="frozen-text" v-if="drink.isFrozen">It's Frozen! <font-awesome-icon :icon="['fasr', 'snowflake']" flip style="color: #78ddf2; font-size: large;" /></p>
+      <span class="pending" v-if="!drink.isApproved">Pending Approval</span>
     </div>
   </div>
 </template>
@@ -132,6 +133,10 @@ h2{
 .frozen-text {
   text-align: right;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  
+
+}
+.pending{
+  font-size: 0.8rem;
+  color: #555;
 }
 </style>

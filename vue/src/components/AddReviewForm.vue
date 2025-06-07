@@ -37,7 +37,8 @@ export default {
             Rating: 0,
             ReviewerUsername: this.$store.state.user.username,
             Reviewer_ID: 0,
-            ReviewText: ''
+            ReviewText: '',
+            IsApproved: false
         }
         }
     },
@@ -54,7 +55,8 @@ export default {
             Rating: 0,
             ReviewerUsername: this.$store.state.user.username,
             Reviewer_ID: 0,
-            ReviewText: ''
+            ReviewText: '',
+            IsApproved: false
         };
                 this.onClick();
             } else {

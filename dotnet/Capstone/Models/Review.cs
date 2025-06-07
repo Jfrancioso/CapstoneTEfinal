@@ -11,6 +11,7 @@ namespace Capstone.Models
         public string ReviewerUsername { get; set; }
         public int Reviewer_ID { get; set; }
         public string ReviewText { get; set; }
+        public bool IsApproved { get; set; }
 
         public IntReview ConvertToIntReview(Review rev)
         {
@@ -21,7 +22,8 @@ namespace Capstone.Models
                 Rating = Convert.ToInt32(rev.Rating),
                 ReviewerUsername = rev.ReviewerUsername,
                 Reviewer_ID = rev.Reviewer_ID,
-                ReviewText = rev.ReviewText
+                ReviewText = rev.ReviewText,
+                IsApproved = rev.IsApproved
             };
 
             return intR;
@@ -35,5 +37,6 @@ namespace Capstone.Models
         public string ReviewerUsername { get; set; }
         public int Reviewer_ID { get; set; }
         public string ReviewText { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

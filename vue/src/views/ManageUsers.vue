@@ -15,6 +15,17 @@
           </li>
         </ul>
       </div>
+      <div class="mt-5">
+        <h4>Pending Drinks</h4>
+        <ul>
+          <li v-for="drink in drinks" :key="drink.drinkID" class="mb-2">
+            <input v-model="drink.name" class="form-control mb-1" />
+            <textarea v-model="drink.description" class="form-control mb-1"></textarea>
+            <label><input type="checkbox" v-model="drink.isApproved" /> Approved</label>
+            <button class="btn btn-primary btn-sm mr-1" @click="updateDrink(drink)">Save</button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -28,12 +39,16 @@ export default {
   data() {
     return {
       users: [],
-      reviews: {}
+      reviews: {},
+      drinks: []
     };
   },
   created() {
     adminService.getUsers().then(r => {
       this.users = r.data;
+    });
+    adminService.getDrinks().then(r => {
+      this.drinks = r.data.filter(d => !d.isApproved);
     });
   },
   methods: {
@@ -52,6 +67,12 @@ export default {
         for (const key in this.reviews) {
           this.reviews[key] = this.reviews[key].filter(r => r.review_ID !== id);
         }
+      });
+    },
+    updateDrink(drink) {
+      adminService.updateDrink(drink.drinkID, drink).then(r => {
+        Object.assign(drink, r.data);
+        this.drinks = this.drinks.filter(d => !d.isApproved);
       });
     }
   }
