@@ -42,8 +42,10 @@ computed: {},
 created(){
     RestaurantService.getDrinksByRestaurant(this.$route.params.id)
     .then((response) => {
-        this.drinks = response.data;
-        console.log(this.drinks);
+        let all = response.data;
+        const uid = this.$store.state.user.userId;
+        const role = this.$store.state.user.role;
+        this.drinks = all.filter(d => d.isApproved || role === 'admin' || d.createdBy === uid);
     })
     .catch((error) => {
         if(error) {

@@ -207,9 +207,9 @@ display: grid;
     margin: 0;
 }
 #theInfoThing{
-    background: rgb(243,250,239,0.8);
+    background: rgba(255,255,255,0.8);
     z-index: -1;
-    
+    padding:10px;
 }
 .widgets{
     width:fit-content;
@@ -233,29 +233,17 @@ h2{
     text-align: center;
 }
 .sunny, .partlyCloudy{
-    background-image: url('../assets/weatherPics/blueSky.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
-    
+    background-color: #e8f4fa;
 }
-.rain {background-image: url('../assets/weatherPics/rain.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
+.rain {
+    background-color: #d0e0e3;
     }
 .cloudy{
-    background-image: url('../assets/weatherPics/clouds.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
-    
+    background-color: #f0f0f0;
+
 }
 .snow{
-    background-image: url('../assets/weatherPics/snow.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
+    background-color: #ffffff;
 }
 #changeZipStuff{
     display: inline-flex;

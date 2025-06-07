@@ -56,8 +56,11 @@ data(){
 created(){
     RestaurantService.getReviewsByRestaurant(this.$route.params.id).then(response => {
         if(response.data != null){
-            this.reviews = response.data
-            
+            let all = response.data;
+            const uid = this.$store.state.user.userId;
+            const role = this.$store.state.user.role;
+            this.reviews = all.filter(r => r.isApproved || role === 'admin' || r.reviewer_ID === uid);
+
         }
         
     }).catch(error =>
@@ -71,8 +74,11 @@ methods:{
     forceUpdate(){
         RestaurantService.getReviewsByRestaurant(this.$route.params.id).then(response => {
         if(response.data != null){
-            this.reviews = response.data
-            
+            let all = response.data;
+            const uid = this.$store.state.user.userId;
+            const role = this.$store.state.user.role;
+            this.reviews = all.filter(r => r.isApproved || role === 'admin' || r.reviewer_ID === uid);
+
         }
         
     }).catch(error =>

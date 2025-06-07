@@ -19,5 +19,11 @@ export default {
     },
     deleteReview(id){
         return http.delete(`admin/reviews/${id}`);
+    },
+    getDrinks(){
+        return http.get('admin/drinks');
+    },
+    updateDrink(id, drink){
+        return http.put(`admin/drinks/${id}`, drink);
     }
 }

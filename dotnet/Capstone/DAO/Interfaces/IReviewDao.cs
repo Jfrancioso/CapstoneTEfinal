@@ -6,7 +6,7 @@ namespace Capstone.DAO.Interfaces
 {
     public interface IReviewDao
     {
-        IList<Review> GetRestaurantReviews(int restID);
+        IList<Review> GetRestaurantReviews(int restID, int userID = 0);
         IList<Review> GetReviewsByUser(int userID);
         IList<Review> GetDrinkReviews(int drinkID);
         Review AddRestaurantReview(Review review);

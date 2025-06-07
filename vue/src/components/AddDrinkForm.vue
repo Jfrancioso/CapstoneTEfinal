@@ -38,7 +38,9 @@ data(){
       Name:'',
       Description:'',
       IsFrozen:false,
-      RestaurantID: Number(this.$route.params.id)
+      RestaurantID: Number(this.$route.params.id),
+      CreatedBy: this.$store.state.user.userId,
+      IsApproved: false
     },
     showAddDrinkForm : false,
     isLoggedIn : false,
@@ -82,6 +84,8 @@ methods:{
       description:'',
       isFrozen:false,
       RestaurantID: this.$route.params.id,
+      CreatedBy: this.$store.state.user.userId,
+      IsApproved: false,
     }
   }
 
