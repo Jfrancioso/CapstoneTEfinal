@@ -12,6 +12,9 @@ import Invite from '../components/InviteUserForm.vue'
 import updateDrinkForm from'../views/UpdateDrinkForm.vue'
 import ReviewList from '../components/ReviewList.vue'
 import SearchDrinksInput from '../components/SearchDrinksInput.vue'
+import AdminDashboard from '../views/AdminDashboard.vue'
+import AddRule from '../views/AddRule.vue'
+import EditRule from '../views/EditRule.vue'
 Vue.use(Router)
 
 /**
@@ -95,6 +98,21 @@ const router = new Router({
             path: "/searchDrinks",
             name: "search-drinks",
             component: SearchDrinksInput
+        },
+        {
+            path: "/admin",
+            name: "admin-dashboard",
+            component: AdminDashboard
+        },
+        {
+            path: "/admin/rules/new",
+            name: "add-rule",
+            component: AddRule
+        },
+        {
+            path: "/admin/rules/:id",
+            name: "edit-rule",
+            component: EditRule
         }
     ]
 })

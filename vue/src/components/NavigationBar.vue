@@ -46,6 +46,12 @@
         >
           Socials
         </button>
+        <button
+          v-if="this.$store.state.user.role === 'admin'"
+          @click="$router.push('/admin')"
+        >
+          Admin
+        </button>
       </div>
     </div>
 </template>
