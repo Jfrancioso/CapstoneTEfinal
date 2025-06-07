@@ -212,5 +212,73 @@ namespace Capstone.DAO
             };
             return rev;
         }
+
+        public IList<Review> GetAllReviews()
+        {
+            List<Review> reviews = new List<Review>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM reviews", conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        reviews.Add(CreateReviewFromReader(reader));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error getting all reviews");
+            }
+            return reviews;
+        }
+
+        public Review UpdateReview(int reviewID, Review review)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(@"UPDATE reviews SET rating = @rating, review_text = @text WHERE review_id = @id", conn);
+                    cmd.Parameters.AddWithValue("@rating", Convert.ToInt32(review.Rating));
+                    cmd.Parameters.AddWithValue("@text", review.ReviewText);
+                    cmd.Parameters.AddWithValue("@id", reviewID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error updating review");
+            }
+            return GetReviewByID(reviewID);
+        }
+
+        public bool DeleteReview(int reviewID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(@"BEGIN TRANSACTION
+                                                      DELETE FROM restaurant_review WHERE review_id = @id;
+                                                      DELETE FROM drink_review WHERE review_id = @id;
+                                                      DELETE FROM reviews WHERE review_id = @id;
+                                                      COMMIT;", conn);
+                    cmd.Parameters.AddWithValue("@id", reviewID);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

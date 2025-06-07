@@ -12,5 +12,8 @@ namespace Capstone.DAO.Interfaces
         Review AddRestaurantReview(Review review);
         Review GetReviewByID(int id);
         bool DeleteRestaurantReview(int reviewID);
+        IList<Review> GetAllReviews();
+        Review UpdateReview(int reviewID, Review review);
+        bool DeleteReview(int reviewID);
     }
 }
