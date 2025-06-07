@@ -121,7 +121,6 @@ namespace Capstone.DAO
             }
             return users;
         }
-
         private User GetUserFromReader(SqlDataReader reader)
         {
             User u = new User()
