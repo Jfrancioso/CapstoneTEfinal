@@ -67,16 +67,13 @@ export default {
     components: {
     FontAwesomeIcon,
   },
-  computed() {
-    this.isAuthenticated = this.$store.state.token !== "";
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.token !== "";
+    }
   },
   data() {
-    return {
-      isAuthenticated: false, // Set to false by default
-    };
-  },
-  created() {
-    this.isAuthenticated = this.$store.state.token !== "";
+    return {};
   },
   methods: {
     //this method is part of the scrollToTopfunctaionality at the top nav bar in template, it does not work, but maybe with some cool js and template powers, you can make it work

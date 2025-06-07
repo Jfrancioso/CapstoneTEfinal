@@ -119,10 +119,14 @@ export default {
           this.yelpReturn = response.data;
           this.haveYelpData = true;
           this.showAddRestaurantForm = false;
-          this.ShowMainButton = false;
+          this.showMainButton = false;
         })
         .catch((error) => {
-          console.log(error);
+          if (error.response && error.response.status === 404) {
+            alert("Sorry, no results found.");
+          } else {
+            console.log(error);
+          }
         });
     },
     MainButtonClick(){
