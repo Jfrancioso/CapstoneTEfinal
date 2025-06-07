@@ -26,7 +26,7 @@
             </div>
             <span id="highlightedWeather">
                 <div id="currentWeather" >
-                    <weather-widget v-bind:period="periods[filter]"/>
+                    <weather-widget v-if="periods.length" v-bind:period="periods[filter]"/>
                 </div>
             </span>
       
